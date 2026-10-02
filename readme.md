@@ -1,48 +1,39 @@
-# CAPTAIN AI: Generative AI Chatbot with Advanced NLP Capabilities  
+# CAPTAIN AI
 
-**CAPTAIN AI** is a cutting-edge generative AI chatbot built to deliver high efficiency, scalability, and exceptional user experience. Leveraging **Flask**, **PyMongo**, **MongoDB**, and the **OpenAI API**, CAPTAIN AI provides near-instantaneous responses with **1.2-second average latency** and a remarkable **98% accuracy rate**.  
+A generative-AI chatbot web app built with **Flask**, **MongoDB**, and the **OpenAI API**, with a **Tailwind CSS** chat interface.
 
-Designed to handle large-scale interactions while maintaining exceptional performance, CAPTAIN AI incorporates advanced **Natural Language Processing (NLP)**, contextual memory, and adaptive learning, making it a versatile solution for real-world applications across industries.  
+## Features
 
----
+- **Chat UI** built with HTML and Tailwind CSS, with previous conversations loaded from the database on page load.
+- **Answer caching:** every question/answer pair is stored in MongoDB. A repeated question is answered from the database instead of calling the OpenAI API again, which saves latency and API cost.
+- **OpenAI integration:** new questions are sent to the OpenAI API and the response is saved for future lookups.
+- **REST endpoint:** `POST /api` with `{"question": "..."}` returns `{"question": ..., "answer": ...}`.
 
-### 🔑 **Key Features**  
+## Tech stack
 
-- **High Scalability & Performance:** Efficiently manages up to **400,000 daily interactions**, ensuring real-time responsiveness and accuracy.  
-- **Advanced NLP:** Powered by state-of-the-art language models integrated with the OpenAI API for intelligent and human-like conversations.  
-- **Contextual Memory & Adaptive Learning:** Tracks conversation history and learns dynamically, enhancing task automation efficiency by **30%** and delivering highly personalized interactions.  
-- **Dynamic User Interface:** Built with **HTML** and **Tailwind CSS**, the interface is designed to boost engagement, increasing user interaction by **20%**.  
-- **Multimodal Processing:** Supports real-time feedback and context-aware responses, catering to complex conversational needs.  
-- **Scalable Data Management:** Utilizes **MongoDB** for efficient, scalable database operations, optimizing data retrieval and storage processes.  
+| Layer    | Tools                              |
+|----------|------------------------------------|
+| Backend  | Python, Flask, Flask-PyMongo       |
+| AI       | OpenAI API                         |
+| Database | MongoDB (Atlas or local)           |
+| Frontend | HTML, JavaScript, Tailwind CSS     |
 
----
+## Getting started
 
-### 🛠️ **Tech Stack**  
+```bash
+git clone https://github.com/anandprabhat15/CAPTAIN-AI.git
+cd CAPTAIN-AI
+pip install flask flask-pymongo openai
+npm install            # Tailwind
+```
 
-- **Backend:** Flask, PyMongo, OpenAI API Integration  
-- **Frontend:** HTML, Tailwind CSS  
-- **Database:** MongoDB  
-- **Performance Metrics:** Real-time processing with a 1.2-second response time and 98% accuracy  
-- **Core Functionalities:** NLP, contextual memory, multimodal processing, adaptive learning  
+1. In `main.py`, set your OpenAI API key and MongoDB connection string. Prefer environment variables over hard-coding credentials, and never commit them.
+2. Build the CSS: `npm run tailwind`
+3. Start the server: `python main.py`, then open http://localhost:5001
 
----
+## Known limitations and roadmap
 
-### 🌟 **Project Outcomes**  
-
-- Seamlessly handled **400,000 daily interactions**, ensuring robust performance and accuracy.  
-- Improved **task automation efficiency by 30%**, reducing manual interventions.  
-- Enhanced user satisfaction and retention with personalized, context-aware conversations.  
-- Boosted **user engagement by 20%** through an intuitive and responsive user interface.  
-- Optimized database management with **MongoDB**, ensuring scalability and reliability.  
-
----
-
-### 🚀 **Why Choose CAPTAIN AI?**  
-
-CAPTAIN AI isn’t just another chatbot; it’s an **innovative conversational AI platform** designed to redefine interaction efficiency and scalability. With its advanced NLP capabilities, high scalability, and seamless user experience, CAPTAIN AI is tailored to meet the demands of businesses, educational platforms, and personal productivity tools.  
-
-Feel free to **explore the codebase**, adapt it to your needs, or contribute to this exciting project!  
-
----
-
-> **⭐ Star this repo to show your support and stay updated with future developments! Contributions are welcome.**
+- The code uses the legacy `openai.Completion` / `text-davinci-003` call, which OpenAI has retired. Migrating to the current Chat Completions API is the first planned fix.
+- Cache lookup is an exact string match on the question; semantic matching (embeddings) would improve hit rate.
+- Credentials should move to environment variables (`.env`).
+- No conversation-memory across turns yet, since each question is answered independently.

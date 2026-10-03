@@ -27,7 +27,7 @@ pip install flask flask-pymongo openai
 npm install            # Tailwind
 ```
 
-1. In `main.py`, set your OpenAI API key and MongoDB connection string. Prefer environment variables over hard-coding credentials, and never commit them.
+1. Copy `.env.example` and set `OPENAI_API_KEY` and `MONGO_URI` as environment variables (defaults to a local MongoDB). Never commit real credentials.
 2. Build the CSS: `npm run tailwind`
 3. Start the server: `python main.py`, then open http://localhost:5001
 
@@ -35,5 +35,4 @@ npm install            # Tailwind
 
 - The code uses the legacy `openai.Completion` / `text-davinci-003` call, which OpenAI has retired. Migrating to the current Chat Completions API is the first planned fix.
 - Cache lookup is an exact string match on the question; semantic matching (embeddings) would improve hit rate.
-- Credentials should move to environment variables (`.env`).
 - No conversation-memory across turns yet, since each question is answered independently.

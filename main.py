@@ -1,14 +1,15 @@
 from flask import Flask, render_template, jsonify, request
 from flask_pymongo import PyMongo
+import os
 import openai
 
-openai.api_key = "insert your API key"
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
 
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://<username>:<password>@cluster0.kbf2h.mongodb.net/captain"
+app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost:27017/captain")
 
 mongo = PyMongo(app)
 
